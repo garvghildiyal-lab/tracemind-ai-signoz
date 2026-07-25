@@ -1,0 +1,185 @@
+body {
+
+  margin:0;
+  font-family:
+  Inter,
+  Arial,
+  sans-serif;
+
+  background:#0b1020;
+  color:white;
+
+}
+
+
+.app{
+
+  padding:30px;
+
+}
+
+
+.header{
+
+  text-align:center;
+
+  margin-bottom:30px;
+
+}
+
+
+.header h1{
+
+  font-size:42px;
+
+}
+
+
+.header p{
+
+  color:#aaa;
+
+}
+
+
+
+.kpi-container{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(4,1fr);
+
+  gap:20px;
+
+}
+
+
+.kpi-card{
+
+  background:#151c33;
+
+  padding:20px;
+
+  border-radius:15px;
+
+}
+
+
+.kpi-card h4{
+
+  color:#aaa;
+
+}
+
+
+.kpi-card p{
+
+  font-size:30px;
+
+}
+
+
+
+.healthy{
+
+  color:#00ff88;
+
+}
+
+
+
+.charts{
+
+  margin-top:30px;
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(2,1fr);
+
+  gap:20px;
+
+}
+
+
+
+.chart-card,
+.analysis-card,
+.timeline-card,
+.copilot-card{
+
+  background:#151c33;
+
+  padding:20px;
+
+  border-radius:15px;
+
+  margin-top:20px;
+
+}
+
+
+
+.grid{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(2,1fr);
+
+  gap:20px;
+
+}
+
+
+
+.incident{
+
+  border-left:
+  3px solid #ff5252;
+
+  padding-left:10px;
+
+  margin:10px 0;
+
+}
+
+
+
+.copilot-card input{
+
+  width:70%;
+
+  padding:12px;
+
+  border-radius:8px;
+
+  border:none;
+
+}
+
+
+
+.copilot-card button{
+
+  padding:12px 20px;
+
+  margin-left:10px;
+
+  cursor:pointer;
+
+}
+
+
+@media(max-width:900px){
+
+.kpi-container,
+.charts,
+.grid{
+
+ grid-template-columns:1fr;
+
+}
+
+}

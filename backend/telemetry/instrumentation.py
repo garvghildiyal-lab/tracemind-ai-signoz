@@ -1,0 +1,104 @@
+import logging
+
+from opentelemetry import trace, metrics
+from opentelemetry._logs import set_logger_provider
+
+from opentelemetry.sdk.resources import Resource
+
+# Traces
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+
+# Metrics
+from opentelemetry.sdk.metrics import MeterProvider
+from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
+from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
+
+# Logs
+from opentelemetry.sdk._logs import LoggerProvider, LoggingHandler
+from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
+from opentelemetry.exporter.otlp.proto.grpc._log_exporter import OTLPLogExporter
+
+# Instrumentation
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from opentelemetry.instrumentation.requests import RequestsInstrumentor
+from opentelemetry.instrumentation.logging import LoggingInstrumentor
+
+resource = Resource.create(
+    {
+        "service.name": "tracemind-ai-backend",
+        "service.version": "1.0.0",
+    }
+)
+
+
+def instrument_app(app):
+
+    # ---------- TRACES ----------
+
+    trace_provider = TracerProvider(resource=resource)
+
+    trace_provider.add_span_processor(
+        BatchSpanProcessor(
+            OTLPSpanExporter(
+                endpoint="localhost:4317",
+                insecure=True,
+            )
+        )
+    )
+
+    trace.set_tracer_provider(trace_provider)
+
+    # ---------- METRICS ----------
+
+    metric_reader = PeriodicExportingMetricReader(
+        OTLPMetricExporter(
+            endpoint="localhost:4317",
+            insecure=True,
+        )
+    )
+
+    meter_provider = MeterProvider(
+        resource=resource,
+        metric_readers=[metric_reader],
+    )
+
+    metrics.set_meter_provider(meter_provider)
+
+    # ---------- LOGS ----------
+
+    logger_provider = LoggerProvider(resource=resource)
+
+    logger_provider.add_log_record_processor(
+        BatchLogRecordProcessor(
+            OTLPLogExporter(
+                endpoint="localhost:4317",
+                insecure=True,
+            )
+        )
+    )
+
+    set_logger_provider(logger_provider)
+
+    handler = LoggingHandler(
+        level=logging.INFO,
+        logger_provider=logger_provider,
+    )
+
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.INFO)
+    root_logger.handlers.clear()
+    root_logger.addHandler(handler)
+
+    # ---------- INSTRUMENTATION ----------
+
+    LoggingInstrumentor().instrument(
+        set_logging_format=True,
+        log_level=logging.INFO,
+    )
+
+    RequestsInstrumentor().instrument()
+
+    if app is not None:
+        FastAPIInstrumentor.instrument_app(app)
