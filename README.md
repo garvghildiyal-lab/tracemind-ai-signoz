@@ -1,45 +1,137 @@
-# TraceMind AI: An AI SRE Built with SigNoz
+# 🧠 TraceMind AI
 
-> An AI-powered Site Reliability Engineer that transforms traces, metrics, and logs into actionable insights using SigNoz and OpenTelemetry.
+An AI-powered Site Reliability Engineering (SRE) platform built with **SigNoz** for real-time observability, incident analysis, and intelligent troubleshooting.
 
-🚧 **Status:** Planning phase (Hackathon)
+---
 
-## 📖 Overview
+## 🚀 Features
 
-TraceMind AI helps developers investigate production incidents faster by combining observability data from SigNoz with AI-powered reasoning.
+- 📊 Real-time observability dashboard
+- 🤖 AI SRE Analysis
+- 🧠 AI Copilot for incident assistance
+- 📈 Live response time and system activity charts
+- 📋 Incident Timeline
+- 🔍 Distributed tracing with SigNoz
+- 📜 Centralized logging
+- 📡 Metrics monitoring
+- ⚡ FastAPI backend with React frontend
 
-Instead of manually correlating logs, metrics, and traces, TraceMind AI provides:
+---
 
-- Incident summaries
-- Root cause analysis
-- Evidence-backed explanations
-- Actionable recommendations
-
-## 🎯 Hackathon
-
-**WeMakeDevs × SigNoz Hackathon 2026**
-
-**Track:** AI & Agent Observability
-
-## 📁 Project Structure
+## 🏗️ Architecture
 
 ```text
-backend/
-frontend/
-telemetry/
-ai/
-docs/
-assets/
-prompts/
+          React Frontend
+                │
+                ▼
+         FastAPI Backend
+                │
+        OpenTelemetry SDK
+                │
+                ▼
+        OpenTelemetry Collector
+                │
+                ▼
+             SigNoz
+        ├── Traces
+        ├── Logs
+        └── Metrics
 ```
 
-## 🚀 Current Status
+---
 
-- ✅ Repository initialized
-- ✅ Development plan prepared
-- ✅ Environment setup completed
-- ⏳ Implementation begins with the hackathon
+## 🛠️ Tech Stack
 
-## 📄 License
+### Frontend
+- React
+- Vite
+- Axios
 
-This project is being developed for the WeMakeDevs × SigNoz Hackathon 2026.
+### Backend
+- FastAPI
+- Python
+- Pydantic
+
+### Observability
+- SigNoz
+- OpenTelemetry
+- Docker
+
+---
+
+## 📸 Dashboard
+
+> Add screenshots here.
+
+### Main Dashboard
+
+![Dashboard](screenshots/dashboard.png)
+
+### SigNoz Traces
+
+![Traces](screenshots/traces.png)
+
+### AI Copilot
+
+![Copilot](screenshots/copilot.png)
+
+---
+
+## ⚙️ Installation
+
+### Clone Repository
+
+```bash
+git clone https://github.com/garvghildiyal-lab/tracemind-ai-signoz.git
+cd tracemind-ai-signoz
+```
+
+### Backend
+
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --host 127.0.0.1 --port 8001
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+---
+
+## 📊 API Endpoints
+
+| Endpoint | Description |
+|----------|-------------|
+| `/health` | Backend health |
+| `/api/v1/demo` | Demo endpoint |
+| `/api/v1/load` | Load simulation |
+| `/api/v1/error` | Error simulation |
+| `/api/v1/analyze` | AI incident analysis |
+| `/api/v1/metrics` | System metrics |
+| `/api/v1/status` | Service status |
+| `/api/v1/copilot` | AI Copilot |
+
+---
+
+## 🎯 Demo
+
+Showcase includes:
+
+- Dashboard
+- AI Analysis
+- AI Copilot
+- Incident Timeline
+- SigNoz Traces
+- Logs
+- Metrics
+
+---
+
