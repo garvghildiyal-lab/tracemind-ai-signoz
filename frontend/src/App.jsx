@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+import Navbar from "./layout/Navbar";
+import Sidebar from "./layout/Sidebar";
+
 import MetricsChart from "./components/MetricsChart";
 import KPICards from "./components/KPICards";
 import AIAnalysis from "./components/AIAnalysis";
@@ -35,6 +38,8 @@ export default function App() {
 
 
 
+
+
   async function fetchHealth(){
 
     try{
@@ -54,8 +59,9 @@ export default function App() {
         ),
 
         status:
-          res.data.status || "Healthy"
-
+  res.data.status?.toLowerCase() === "healthy"
+    ? "Healthy"
+    : "Offline"
       });
 
 
@@ -161,83 +167,78 @@ setIncidents(prev => [
 
 
   return (
+  <div className="dashboard-layout">
 
-    <div className="app">
+    <Sidebar />
 
+    <main className="main-content">
 
-      <header className="header">
+      <Navbar />
 
-        <h1>
-          TraceMind AI
-        </h1>
+      <section className="hero">
 
-        <p>
-          AI SRE Observability Platform powered by SigNoz
-        </p>
+  <div className="hero-header">
 
-      </header>
+    <h1>TraceMind AI</h1>
 
+   <span
+  className={`status-pill ${
+    metrics.status === "Healthy"
+      ? "status-online"
+      : "status-offline"
+  }`}
+>
+  {metrics.status === "Healthy"
+    ? "🟢 Healthy"
+    : "🔴 Offline"}
+</span>
 
+  </div>
 
-      <KPICards metrics={metrics}/>
+  <p>
+    Enterprise AI Observability Platform powered by SigNoz
+  </p>
 
+</section>
 
+      <KPICards metrics={metrics} />
 
       <div className="charts">
-
-
         <MetricsChart
-
           title="Response Time"
-
           data={chartData}
-
-          color="#00e5ff"
-
+          color="#3b82f6"
         />
-
 
         <MetricsChart
-
           title="System Activity"
-
           data={chartData}
-
-          color="#00ff88"
-
+          color="#22c55e"
         />
-
-
       </div>
-
-
 
       <div className="grid">
 
+  <div className="left-panel">
 
-        <AIAnalysis
+    <AIAnalysis analysis={analysis} />
 
-          analysis={analysis}
+    <IncidentTimeline incidents={incidents} />
 
-        />
-
-
-        <IncidentTimeline
-
-          incidents={incidents}
-
-        />
+  </div>
 
 
-      </div>
+  <div className="right-panel">
 
+    <Copilot />
 
+  </div>
 
-      <Copilot/>
+</div>
 
+    </main>
 
-    </div>
-
-  );
+  </div>
+);
 
 }
