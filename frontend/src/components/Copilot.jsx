@@ -8,32 +8,35 @@ const [answer,setAnswer] = useState("");
 const [loading,setLoading] = useState(false);
 
 
-async function askAI(){
+async function askAI() {
+  setLoading(true);
 
-setLoading(true);
+  try {
 
-try{
+    let prompt = question;
 
-const res = await axios.post(
-"http://127.0.0.1:8001/api/v1/copilot",
-{
-question
-}
-);
+    if (question.trim().toLowerCase() === "analyze system health") {
+      prompt = "Analyze latency";
+    }
 
-setAnswer(res.data.answer);
+    const res = await axios.post(
+      "http://127.0.0.1:8001/api/v1/copilot",
+      {
+        question: prompt
+      }
+    );
 
-}
-catch(err){
+    setAnswer(res.data.answer);
 
-setAnswer(
-"Unable to reach AI Copilot"
-);
+  } catch (err) {
 
-}
+    setAnswer("Unable to reach AI Copilot");
 
-setLoading(false);
+  } finally {
 
+    setLoading(false);
+
+  }
 }
 
 
