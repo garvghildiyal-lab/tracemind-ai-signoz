@@ -338,6 +338,9 @@ https://github.com/garvghildiyal-lab/tracemind-ai-signoz
 
 ---
 
+**🌐 Live Demo**  
+https://tracemind-ai-signoz.vercel.app
+
 # 👨‍💻 Author
 
 Garv Ghildiyal
