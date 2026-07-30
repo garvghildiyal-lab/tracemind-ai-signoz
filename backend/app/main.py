@@ -21,9 +21,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-    ],
+    allow_origins=["*"],   # Temporary for deployment
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -60,9 +58,9 @@ async def health():
     logger.info("Health endpoint called")
 
     return {
-        "status": "healthy",
-        "service": "backend",
-    }
+    "status": "Healthy",
+    "service": "backend",
+}
 
 
 @app.get("/api/v1/demo")

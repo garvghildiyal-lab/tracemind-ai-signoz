@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+const API = import.meta.env.VITE_API_URL || "http://127.0.0.1:8001";
 
 export default function Copilot(){
 
@@ -20,7 +21,7 @@ async function askAI() {
     }
 
     const res = await axios.post(
-      "http://127.0.0.1:8001/api/v1/copilot",
+      `${API}/api/v1/copilot`,
       {
         question: prompt
       }

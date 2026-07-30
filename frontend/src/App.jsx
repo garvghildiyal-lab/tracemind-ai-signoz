@@ -11,6 +11,7 @@ import IncidentTimeline from "./components/IncidentTimeline";
 import Copilot from "./components/Copilot";
 
 import "./App.css";
+const API = import.meta.env.VITE_API_URL || "http://127.0.0.1:8001";
 
 
 export default function App() {
@@ -44,7 +45,7 @@ export default function App() {
 
     try{
 
-      const res = await axios.get("http://127.0.0.1:8001/health")
+      const res = await axios.get(`${API}/health`)
 
       setMetrics({
 
