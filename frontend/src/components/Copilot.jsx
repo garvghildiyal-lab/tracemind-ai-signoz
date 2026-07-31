@@ -1,123 +1,144 @@
 import { useState } from "react";
 import axios from "axios";
-const API = import.meta.env.VITE_API_URL || "http://127.0.0.1:8001";
 
-export default function Copilot(){
+const API =
+  import.meta.env.VITE_API_URL ||
+  "http://127.0.0.1:8001";
 
-const [question,setQuestion] = useState("");
-const [answer,setAnswer] = useState("");
-const [loading,setLoading] = useState(false);
+const suggestions = [
+  "Analyze system health",
+  "Analyze latency",
+  "Explain traces",
+  "Explain logs",
+  "Explain metrics",
+  "Root cause analysis",
+  "Error investigation",
+  "Performance tuning",
+];
 
+export default function Copilot() {
 
-async function askAI() {
-  setLoading(true);
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  try {
+  async function askAI(customQuestion = null) {
 
-    let prompt = question;
+    const prompt = customQuestion || question;
 
-    if (question.trim().toLowerCase() === "analyze system health") {
-      prompt = "Analyze latency";
+    if (!prompt.trim()) return;
+
+    setLoading(true);
+
+    try {
+
+      const res = await axios.post(
+        `${API}/api/v1/copilot`,
+        {
+          question: prompt,
+        }
+      );
+
+      setAnswer(res.data.answer);
+
+    } catch {
+
+      setAnswer("Unable to reach AI Copilot.");
+
+    } finally {
+
+      setLoading(false);
+
     }
 
-    const res = await axios.post(
-      `${API}/api/v1/copilot`,
-      {
-        question: prompt
-      }
-    );
-
-    setAnswer(res.data.answer);
-
-  } catch (err) {
-
-    setAnswer("Unable to reach AI Copilot");
-
-  } finally {
-
-    setLoading(false);
-
   }
-}
 
+  return (
 
-return (
+    <div className="copilot-card">
 
-<div className="copilot-card">
+      <div className="copilot-header">
 
+        <span className="copilot-icon">🤖</span>
 
-<div className="copilot-header">
+        <div>
 
-<span className="copilot-icon">
-🤖
-</span>
+          <h3>TraceMind Copilot</h3>
 
-<div>
-<h3>TraceMind Copilot</h3>
-<p>AI SRE Assistant</p>
-</div>
+          <p>AI-powered SRE Assistant</p>
 
-</div>
+        </div>
 
+      </div>
 
+      <div className="copilot-status">
 
-<div className="copilot-status">
+        <span className="status-dot"></span>
 
-<span className="status-dot"></span>
+        Monitoring System Health
 
-Monitoring System Health
+      </div>
 
-</div>
+      <input
+        value={question}
+        onChange={(e) => setQuestion(e.target.value)}
+        placeholder="Ask TraceMind AI..."
+      />
 
+      <p
+        style={{
+          marginTop: "14px",
+          marginBottom: "12px",
+          color: "var(--muted)",
+          fontSize: "13px",
+          lineHeight: "1.6",
+        }}
+      >
+        TraceMind can help analyze application health, latency, logs,
+        metrics, traces, performance bottlenecks, errors, and possible
+        root causes.
+      </p>
 
+      <div className="ai-suggestions">
 
-<input
+        {suggestions.map((item) => (
 
-value={question}
+          <button
+            type="button"
+            key={item}
+            className="ai-chip"
+            onClick={() => {
+              setQuestion(item);
+              askAI(item);
+            }}
+          >
+            {item}
+          </button>
 
-onChange={
-e=>setQuestion(e.target.value)
-}
+        ))}
 
-placeholder="Analyze traces, errors, latency..."
+      </div>
 
-/>
+      <button
+        onClick={() => askAI()}
+      >
+        {loading ? "Analyzing..." : "Analyze Incident"}
+      </button>
 
+      {answer && (
 
+        <div className="ai-response">
 
-<button onClick={askAI}>
+          <h4>AI Analysis</h4>
 
-{
-loading
-?
-"Analyzing..."
-:
-"Analyze Incident"
-}
+          <p>{answer}</p>
 
-</button>
+        </div>
 
+      )}
 
+    </div>
 
-{
-answer &&
-
-<div className="ai-response">
-
-<h4>AI Analysis</h4>
-
-<p>
-{answer}
-</p>
-
-</div>
-
-}
-
-
-
-</div>
-
-);
+  );
 
 }

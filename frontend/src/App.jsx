@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
 import Navbar from "./layout/Navbar";
@@ -11,235 +11,282 @@ import IncidentTimeline from "./components/IncidentTimeline";
 import Copilot from "./components/Copilot";
 
 import "./App.css";
+
 const API = import.meta.env.VITE_API_URL || "http://127.0.0.1:8001";
 
-
 export default function App() {
+  const [activeSection, setActiveSection] = useState("dashboard");
 
+  const dashboardRef = useRef(null);
+  const metricsRef = useRef(null);
+  const analyticsRef = useRef(null);
+  const copilotRef = useRef(null);
+  const incidentsRef = useRef(null);
+  const settingsRef = useRef(null);
 
-  const [metrics,setMetrics] = useState({
-
+  const [metrics, setMetrics] = useState({
     requests: 0,
     response: 0,
     errors: 0,
-    status: "Checking..."
-
+    status: "Checking...",
   });
 
+  const [chartData, setChartData] = useState([]);
 
-  const [chartData,setChartData] = useState([]);
-
-
-  const [analysis,setAnalysis] = useState(
+  const [analysis, setAnalysis] = useState(
     "Analyzing system behaviour..."
   );
 
+  const [incidents, setIncidents] = useState([]);
 
-  const [incidents,setIncidents] = useState([]);
-
-
-
-
-
-  async function fetchHealth(){
-
-    try{
-
-      const res = await axios.get(`${API}/health`)
+  async function fetchHealth() {
+    try {
+      const res = await axios.get(`${API}/health`);
 
       setMetrics({
-
-        requests: Math.floor(Math.random()*500),
-
-        response: Math.floor(
-          Math.random()*300
-        ),
-
-        errors: Math.floor(
-          Math.random()*5
-        ),
-
+        requests: Math.floor(Math.random() * 500),
+        response: Math.floor(Math.random() * 300),
+        errors: Math.floor(Math.random() * 5),
         status:
-  res.data.status?.toLowerCase() === "healthy"
-    ? "Healthy"
-    : "Offline"
+          res.data.status?.toLowerCase() === "healthy"
+            ? "Healthy"
+            : "Offline",
       });
 
-
-      setChartData(prev => [
-
+      setChartData((prev) => [
         ...prev.slice(-9),
-
         {
-
-          time:
-            new Date()
-            .toLocaleTimeString(),
-
-          value:
-            Math.floor(
-              Math.random()*300
-            )
-
-        }
-
+          time: new Date().toLocaleTimeString(),
+          value: Math.floor(Math.random() * 300),
+        },
       ]);
 
-
       setAnalysis(
-  "System is operating normally. No critical anomalies detected."
-);
+        "System is operating normally. No critical anomalies detected."
+      );
 
-setIncidents(prev => [
-  ...prev.slice(-9),
-  {
-    time: new Date().toLocaleTimeString(),
-    message: "Health check passed"
-  }
-]);   
-
-    }
-
-
-    catch(error){
-
-
+      setIncidents((prev) => [
+        ...prev.slice(-9),
+        {
+          time: new Date().toLocaleTimeString(),
+          message: "Health check passed",
+        },
+      ]);
+    } catch {
       setMetrics({
-
-        requests:0,
-
-        response:0,
-
-        errors:100,
-
-        status:"Offline"
-
+        requests: 0,
+        response: 0,
+        errors: 100,
+        status: "Offline",
       });
-
 
       setAnalysis(
         "Backend service unavailable. Check logs and traces."
       );
 
-
-      setIncidents(prev=>[
-
+      setIncidents((prev) => [
         ...prev,
-
         {
+          time: new Date().toLocaleTimeString(),
+          message: "Backend health check failed",
+        },
+      ]);
+    }
+  }
 
-          time:
-            new Date()
-            .toLocaleTimeString(),
+ useEffect(() => {
+  fetchHealth();
+  const timer = setInterval(fetchHealth, 5000);
+  return () => clearInterval(timer);
+}, []);
 
-          message:
-            "Backend health check failed"
+
+useEffect(() => {
+
+  const observer = new IntersectionObserver(
+
+    (entries) => {
+
+      entries.forEach((entry) => {
+
+        if (entry.isIntersecting) {
+
+          setActiveSection(entry.target.id);
 
         }
 
-      ]);
+      });
+
+    },
+
+    {
+
+      threshold: 0.35,
+
+      rootMargin: "-120px 0px -45% 0px",
 
     }
 
-  }
+  );
+
+  [
+    dashboardRef,
+    metricsRef,
+    analyticsRef,
+    copilotRef,
+    incidentsRef,
+    settingsRef,
+
+  ].forEach((ref) => {
+
+    if (ref.current) {
+
+      observer.observe(ref.current);
+
+    }
+
+  });
+
+  return () => observer.disconnect();
+
+}, []);
 
 
+  
 
-  useEffect(()=>{
-
-
-    fetchHealth();
-
-
-    const timer=setInterval(
-
-      fetchHealth,
-
-      5000
-
-    );
-
-
-    return ()=>clearInterval(timer);
-
-
-  },[]);
-
-
+  const scrollTo = (ref) =>
+    ref.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
 
   return (
-  <div className="dashboard-layout">
+    <div className="dashboard-layout">
 
-    <Sidebar />
+      <Sidebar
+        active={activeSection}
+        scrollTo={{
+          dashboard: () => scrollTo(dashboardRef),
+          metrics: () => scrollTo(metricsRef),
+          analytics: () => scrollTo(analyticsRef),
+          copilot: () => scrollTo(copilotRef),
+          incidents: () => scrollTo(incidentsRef),
+          settings: () => scrollTo(settingsRef),
+        }}
+      />
 
-    <main className="main-content">
+      <main className="main-content">
 
-      <Navbar />
+        <Navbar />
 
-      <section className="hero">
+        <section
+          ref={dashboardRef}
+          id="dashboard"
+          className="hero"
+        >
+          <div className="hero-header">
 
-  <div className="hero-header">
+            <div>
 
-    <h1>TraceMind AI</h1>
+              <h1>TraceMind AI</h1>
 
-   <span
-  className={`status-pill ${
-    metrics.status === "Healthy"
-      ? "status-online"
-      : "status-offline"
-  }`}
+              <p>
+                Enterprise AI Observability Platform powered by SigNoz
+              </p>
+
+            </div>
+
+            <span
+              className={`status-pill ${
+                metrics.status === "Healthy"
+                  ? "status-online"
+                  : "status-offline"
+              }`}
+            >
+              {metrics.status === "Healthy"
+                ? "🟢 Healthy"
+                : "🔴 Offline"}
+            </span>
+
+          </div>
+        </section>
+
+        <section
+          ref={metricsRef}
+          id="metrics"
+        >
+          <KPICards metrics={metrics} />
+        </section>
+
+        <section
+          ref={analyticsRef}
+          id="analytics"
+          className="charts"
+        >
+
+          <MetricsChart
+            title="Response Time"
+            data={chartData}
+            color="#3b82f6"
+          />
+
+          <MetricsChart
+            title="System Activity"
+            data={chartData}
+            color="#22c55e"
+          />
+
+        </section>
+
+        <div className="grid">
+
+          <div className="left-panel">
+
+            <section
+  id="analytics"
+  ref={analyticsRef}
 >
-  {metrics.status === "Healthy"
-    ? "🟢 Healthy"
-    : "🔴 Offline"}
-</span>
-
-  </div>
-
-  <p>
-    Enterprise AI Observability Platform powered by SigNoz
-  </p>
-
+  <AIAnalysis analysis={analysis} />
 </section>
 
-      <KPICards metrics={metrics} />
+            <section
+  id="analysis"
+>
+  <AIAnalysis analysis={analysis} />
+</section>
 
-      <div className="charts">
-        <MetricsChart
-          title="Response Time"
-          data={chartData}
-          color="#3b82f6"
-        />
+            <section
+              id="settings"
+              ref={settingsRef}
+              className="analysis-card"
+            >
+              <h3>⚙ Settings</h3>
 
-        <MetricsChart
-          title="System Activity"
-          data={chartData}
-          color="#22c55e"
-        />
-      </div>
+              <p>Coming Soon</p>
 
-      <div className="grid">
+              <ul style={{ marginTop: 15 }}>
+                <li>Theme Customization</li>
+                <li>Notification Preferences</li>
+                <li>Alert Rules</li>
+                <li>Cloud Integrations</li>
+              </ul>
 
-  <div className="left-panel">
+            </section>
 
-    <AIAnalysis analysis={analysis} />
+          </div>
 
-    <IncidentTimeline incidents={incidents} />
+          <div
+            className="right-panel"
+            ref={copilotRef}
+            id="copilot"
+          >
+            <Copilot />
+          </div>
 
-  </div>
+        </div>
 
+      </main>
 
-  <div className="right-panel">
-
-    <Copilot />
-
-  </div>
-
-</div>
-
-    </main>
-
-  </div>
-);
-
+    </div>
+  );
 }

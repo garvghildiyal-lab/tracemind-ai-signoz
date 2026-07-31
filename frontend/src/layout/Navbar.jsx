@@ -3,39 +3,65 @@ import { useTheme } from "../theme/ThemeContext";
 
 export default function Navbar() {
 
-const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
 
-return (
+  return (
 
-<div className="navbar">
+    <div className="navbar">
 
-<div className="search">
+      <div className="navbar-left">
 
-<Search size={18}/>
+        <div className="search">
 
-<input placeholder="Search traces..." />
+          <Search size={18} />
 
-</div>
+          <input placeholder="Search traces, logs, metrics..." />
 
-<div className="nav-right">
+        </div>
 
-<div className="system-status">
-  <span className="status-dot"></span>
-  System Healthy
-</div>
+      </div>
 
-<Bell/>
+      <div className="navbar-right">
 
-<button onClick={toggleTheme}>
+        <div className="system-status">
 
-{theme==="dark" ? <Sun/> : <Moon/>}
+          <span className="status-dot"></span>
 
-</button>
+          System Healthy
 
-</div>
+        </div>
 
-</div>
+        <div
+          style={{
+            display: "flex",
+            gap: "12px",
+          }}
+        >
 
-);
+          <button className="icon-btn">
+
+            <Bell size={20} />
+
+          </button>
+
+          <button
+            className="icon-btn"
+            onClick={toggleTheme}
+          >
+
+            {theme === "dark"
+              ? <Sun size={20}/>
+              : <Moon size={20}/>
+            }
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  );
 
 }
