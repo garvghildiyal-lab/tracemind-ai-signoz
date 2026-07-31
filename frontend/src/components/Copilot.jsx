@@ -85,6 +85,20 @@ export default function Copilot() {
         placeholder="Ask TraceMind AI..."
       />
 
+      <div className="copilot-help">
+
+<h4>What can AI Copilot help with?</h4>
+
+<ul>
+<li>🔍 Analyze latency spikes</li>
+<li>📊 Explain traces and metrics</li>
+<li>🚨 Investigate incidents</li>
+<li>🧠 Find possible root causes</li>
+<li>⚡ Suggest performance improvements</li>
+</ul>
+
+</div>
+
       <p
         style={{
           marginTop: "14px",

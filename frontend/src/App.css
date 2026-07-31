@@ -10,6 +10,8 @@ left:0;
 
 top:0;
 
+bottom:0;
+
 width:270px;
 
 height:100vh;
@@ -214,7 +216,7 @@ position:sticky;
 
 top:0;
 
-z-index:999;
+z-index:1000;
 
 display:flex;
 
@@ -222,11 +224,13 @@ justify-content:space-between;
 
 align-items:center;
 
-padding:20px 0;
+padding:18px 0;
 
 margin-bottom:30px;
 
 background:var(--bg);
+
+backdrop-filter:blur(15px);
 
 }
 
@@ -270,10 +274,9 @@ display:flex;
 
 align-items:center;
 
-gap:14px;
+gap:22px;
 
 }
-
 .icon-btn{
 width:48px;
 height:48px;
@@ -440,10 +443,9 @@ transform:translateY(-6px);
 =========================== */
 
 .grid{
-display:grid;
-grid-template-columns:1fr 380px;
-gap:24px;
-align-items:start;
+
+display:block;
+
 }
 
 .left-panel{
@@ -452,10 +454,7 @@ flex-direction:column;
 gap:24px;
 }
 
-.right-panel{
-position:sticky;
-top:25px;
-}
+
 
 /* ===========================
    ANALYSIS CARD
@@ -685,6 +684,8 @@ grid-template-columns:1fr;
 @media(max-width:768px){
 
 .sidebar{
+display:flex;
+flex-direction:column;
 position:fixed;
 left:0;
 top:0;
@@ -703,9 +704,15 @@ z-index:999;
 }
 
 .main-content{
+
 margin-left:270px;
-padding:32px 40px;
+
 flex:1;
+
+padding:0 35px 40px;
+
+overflow-x:hidden;
+
 }
 
 section{
@@ -755,6 +762,10 @@ width:100%;
 flex-direction:row;
 justify-content:flex-end;
 align-items:center;
+}
+
+section{
+scroll-margin-top:100px;
 }
 
 }

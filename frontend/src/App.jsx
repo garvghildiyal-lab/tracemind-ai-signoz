@@ -222,10 +222,10 @@ const scrollTo = (ref) => {
         </section>
 
         <section
-          ref={analyticsRef}
-          id="analytics"
-          className="charts"
-        >
+ref={metricsRef}
+id="metrics"
+className="charts"
+>
 
           <MetricsChart
             title="Response Time"
