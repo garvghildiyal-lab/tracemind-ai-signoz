@@ -221,10 +221,9 @@ const scrollTo = (ref) => {
           <KPICards metrics={metrics} />
         </section>
 
-        <section
-ref={metricsRef}
-id="metrics"
-className="charts"
+      <section
+  id="charts"
+  className="charts"
 >
 
           <MetricsChart
@@ -241,55 +240,47 @@ className="charts"
 
         </section>
 
-        <div className="grid">
-
-          <div className="left-panel">
-
- 
-
-<section
-  id="analytics"
+      <section
   ref={analyticsRef}
+  id="analytics"
 >
   <AIAnalysis analysis={analysis} />
 </section>
 
+
 <section
-  id="incidents"
+  ref={copilotRef}
+  id="copilot"
+>
+  <Copilot />
+</section>
+
+
+<section
   ref={incidentsRef}
+  id="incidents"
 >
   <IncidentTimeline incidents={incidents} />
 </section>
 
+
 <section
-  id="settings"
   ref={settingsRef}
+  id="settings"
   className="analysis-card"
 >
-              <h3>⚙ Settings</h3>
+  <h3>⚙ Settings</h3>
 
-              <p>Coming Soon</p>
+  <p>Coming Soon</p>
 
-              <ul style={{ marginTop: 15 }}>
-                <li>Theme Customization</li>
-                <li>Notification Preferences</li>
-                <li>Alert Rules</li>
-                <li>Cloud Integrations</li>
-              </ul>
+  <ul style={{ marginTop: 15 }}>
+    <li>Theme Customization</li>
+    <li>Notification Preferences</li>
+    <li>Alert Rules</li>
+    <li>Cloud Integrations</li>
+  </ul>
 
-            </section>
-
-          </div>
-
-          <div
-            className="right-panel"
-            ref={copilotRef}
-            id="copilot"
-          >
-            <Copilot />
-          </div>
-
-        </div>
+</section>
 
       </main>
 
