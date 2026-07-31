@@ -28,6 +28,21 @@ z-index:999;
 
 }
 
+.dashboard-layout{
+    display:flex;
+    min-height:100vh;
+}
+
+.main-content{
+    margin-left:270px;
+    width:calc(100% - 270px);
+    min-height:100vh;
+    padding:0 35px 40px;
+}
+
+
+
+
 .logo{
 
 display:flex;
@@ -661,6 +676,30 @@ transform:translateY(-2px);
    RESPONSIVE
 =========================== */
 
+/* =========================
+   MAIN DASHBOARD LAYOUT
+========================= */
+
+.dashboard-layout{
+    display:flex;
+    min-height:100vh;
+}
+
+
+.main-content{
+
+    margin-left:0;
+
+    width:100%;
+
+    padding:20px;
+
+    overflow-x:hidden;
+
+}
+
+
+
 @media(max-width:1200px){
 
 .grid{
@@ -705,11 +744,11 @@ z-index:999;
 
 .main-content{
 
-margin-left:270px;
+margin-left:0;
 
-flex:1;
+width:100%;
 
-padding:0 35px 40px;
+padding:20px;
 
 overflow-x:hidden;
 
