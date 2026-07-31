@@ -151,26 +151,17 @@ useEffect(() => {
 
 }, []);
 
-
-  
-
 const scrollTo = (ref) => {
 
   setActiveSection(ref.current.id);
 
   ref.current?.scrollIntoView({
-
-    behavior:"smooth",
-
-    block:"start",
-
+    behavior: "smooth",
+    block: "start",
   });
 
 };
 
-  setActiveSection(ref.current.id);
-
-};
 
   return (
     <div className="dashboard-layout">
@@ -254,24 +245,27 @@ const scrollTo = (ref) => {
 
           <div className="left-panel">
 
-            <section
+ 
+
+<section
   id="analytics"
   ref={analyticsRef}
 >
   <AIAnalysis analysis={analysis} />
 </section>
 
-            <section
-  id="analysis"
+<section
+  id="incidents"
+  ref={incidentsRef}
 >
-  <AIAnalysis analysis={analysis} />
+  <IncidentTimeline incidents={incidents} />
 </section>
 
-            <section
-              id="settings"
-              ref={settingsRef}
-              className="analysis-card"
-            >
+<section
+  id="settings"
+  ref={settingsRef}
+  className="analysis-card"
+>
               <h3>⚙ Settings</h3>
 
               <p>Coming Soon</p>
