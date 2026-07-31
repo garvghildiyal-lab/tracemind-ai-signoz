@@ -154,11 +154,23 @@ useEffect(() => {
 
   
 
-  const scrollTo = (ref) =>
-    ref.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+const scrollTo = (ref) => {
+
+  setActiveSection(ref.current.id);
+
+  ref.current?.scrollIntoView({
+
+    behavior:"smooth",
+
+    block:"start",
+
+  });
+
+};
+
+  setActiveSection(ref.current.id);
+
+};
 
   return (
     <div className="dashboard-layout">

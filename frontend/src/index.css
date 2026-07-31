@@ -9,6 +9,10 @@
 --border:#293247;
 }
 
+html{
+scroll-behavior:smooth;
+}
+
 [data-theme="light"]{
 --bg:#f5f7fb;
 --surface:#ffffff;
